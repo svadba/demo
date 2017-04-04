@@ -1,0 +1,45 @@
+ {% extends 'shop/base.html' %}
+{% load static %}
+{% block content %}
+
+ <div class="items row">
+      {% for product in products %}
+        <div class="item col-sm-4">
+          <a href="{{ product.get_absolute_url }}">
+            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no-image.jpg"%}{% endif %}" class="img-responsive">
+          </a>
+          <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>
+          {{ product.price }} тенге.
+        </div>
+      {% endfor %}
+
+    </div>
+    <div class="pagination">
+
+
+    {% if city.has_previous %}
+        <a href="?page={{ products.previous_page_number }}">←</a>
+    {% endif %}
+
+    {% for num in products.paginator.page_range %}
+        {% if num == products.number %}
+            <span class="current"><b>{{ num }}</b></span>
+        {% else %}
+            <a href="?page={{ num }}"> {{ num }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if city_list.has_next %}
+        <a href="?page={{ city_list.next_page_number }}">→</a>
+    {% endif %}
+
+</div>
+
+    {% for product in products %}
+        {{ product.city }}
+        {{ product.name }}
+        {{ product.category }}
+        {{ product.description }}
+    {% endfor %}
+    {% block content1 %}{% endblock %}
+{% endblock %}
